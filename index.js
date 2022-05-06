@@ -39,12 +39,40 @@ async function run(){
              const inventory = await productCollection.findOne(query);
              res.send(inventory);
          });
+
+        //  post service 
+        app.post('/inventory', async(req, res) => {
+            const newService = req.body;
+            const result = await productCollection.insertOne(newService);
+            res.send(result);
+        })
         //  quantityCollection  
         app.post('/quantity', async(req , res) => {
             const quantity = req.body;
             const result = await quantityCollection.insertOne(quantity);
             res.send(result);
-        })
+        });
+
+        // quantity show ui 
+        app.get('/quantity', async(req,res) => {
+            const email =req.query.email;
+            console.log(email);
+            const query = {email:email};
+            const cursor =quantityCollection.find(query);
+            const quantity = await cursor.toArray();
+            res.send(quantity);
+        });
+            // delete note
+    //http://localhost:4000/note/6262dcd73f629a282aaba2e6
+    app.delete("/inventory/:id", async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id) };
+  
+        const result = await productCollection.deleteOne(filter);
+  
+        res.send(result);
+      });
+
     }
      finally{ }
 
