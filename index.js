@@ -116,6 +116,9 @@ run().catch(console.dir);
 app.get('/', (req,res) => {
     res.send('server is runnning and waitting for store')
 });
+app.get('/add', (req,res) => {
+    res.send('server is runnning and waitting for store')
+});
 app.listen(port, () => {
     console.log("server is running on port", port);
 });
