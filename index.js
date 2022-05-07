@@ -23,6 +23,7 @@ async function run(){
         await client.connect();
          const productCollection = client.db('service').collection('product');
          const quantityCollection = client.db('service').collection('quantity');
+         const MyitemCollection = client.db('service').collection('myitem');
             
         //  all servise
          app.get('/inventory', async(req, res) => {
@@ -46,6 +47,16 @@ async function run(){
             const result = await productCollection.insertOne(newService);
             res.send(result);
         })
+                    // delete inventory
+    //http://localhost:4000/note/6262dcd73f629a282aaba2e6
+    app.delete("/inventory/:id", async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id) };
+  
+        const result = await productCollection.deleteOne(filter);
+  
+        res.send(result);
+      });
         //  quantityCollection  
         app.post('/quantity', async(req , res) => {
             const quantity = req.body;
@@ -64,14 +75,35 @@ async function run(){
         });
             // delete note
     //http://localhost:4000/note/6262dcd73f629a282aaba2e6
-    app.delete("/inventory/:id", async (req, res) => {
+    app.delete("/myitem/:id", async (req, res) => {
         const id = req.params.id;
         const filter = { _id: ObjectId(id) };
   
-        const result = await productCollection.deleteOne(filter);
+        const result = await MyitemCollection.deleteOne(filter);
   
         res.send(result);
       });
+
+    //   my item service 
+    app.get('/myitem', async(req, res) => {
+        const query = {};
+        const cursor = MyitemCollection.find(query);
+        const products = await cursor.toArray();
+        res.send(products);
+    });
+    app.post('/myitem', async(req , res) => {
+        const quantity = req.body;
+        const result = await MyitemCollection.insertOne(quantity);
+        res.send(result);
+    });
+        //  inventory id 
+        app.get('/myitem/:id',async(req,res) => {
+            const id =req.params.id;
+            console.log(id);
+            const query={_id: ObjectId(id)};
+            const inventory = await MyitemCollection.findOne(query);
+            res.send(inventory);
+        });
 
     }
      finally{ }
