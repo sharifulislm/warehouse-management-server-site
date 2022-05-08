@@ -24,6 +24,7 @@ async function run(){
          const productCollection = client.db('service').collection('product');
          const quantityCollection = client.db('service').collection('quantity');
          const MyitemCollection = client.db('service').collection('myitem');
+         const ManageItemCollection = client.db('service').collection('manageitem')
             
         //  all servise
          app.get('/inventory', async(req, res) => {
@@ -48,7 +49,7 @@ async function run(){
             res.send(result);
         })
                     // delete inventory
-    //http://localhost:4000/note/6262dcd73f629a282aaba2e6
+
     app.delete("/inventory/:id", async (req, res) => {
         const id = req.params.id;
         const filter = { _id: ObjectId(id) };
@@ -57,24 +58,52 @@ async function run(){
   
         res.send(result);
       });
-        //  quantityCollection  
-        app.post('/quantity', async(req , res) => {
-            const quantity = req.body;
-            const result = await quantityCollection.insertOne(quantity);
-            res.send(result);
-        });
 
-        // quantity show ui 
-        app.get('/quantity', async(req,res) => {
-            const email =req.query.email;
-            console.log(email);
-            const query = {email:email};
-            const cursor =quantityCollection.find(query);
-            const quantity = await cursor.toArray();
-            res.send(quantity);
-        });
+    //   update product 
+    // app.put("/inventory/:id", async (req, res) => {
+    //    const id = req.params.id;
+    //    const updatequantity = req.body;
+    //    const filter = {_id: ObjectId(id)};
+    //    const options = { upsert : true};
+    //    const updateddoc = {
+    //        $set: {
+            
+    //         description:updatequantity.description,
+    //         gender:updatequantity.gender,
+    //         images:updatequantity.images,
+    //         name:updatequantity.name,
+    //         price:updatequantity.price,
+    //         quantity: updatequantity.quantity,
+    //         supplierName:updatequantity.supplierName
+
+
+
+
+
+
+    //        }
+    //    };
+
+
+    // my manage post product collection from clint  
+      app.post('/manageitem' , async(req, res) => {
+        const manageitem = req.body;
+        const result = await ManageItemCollection.insertOne(manageitem);
+        res.send(result);
+
+      })
+    //   show product Outsite 
+    app.get('/userItem', async(req,res) => {
+        const email =req.query.email;
+        console.log(email);
+        const query = {email:email};
+        const cursor =ManageItemCollection.find(query);
+        const userItem = await cursor.toArray();
+        res.send(userItem);
+    });
+ 
             // delete note
-    //http://localhost:4000/note/6262dcd73f629a282aaba2e6
+
     app.delete("/myitem/:id", async (req, res) => {
         const id = req.params.id;
         const filter = { _id: ObjectId(id) };
@@ -117,7 +146,7 @@ app.get('/', (req,res) => {
     res.send('server is runnning and waitting for store')
 });
 app.get('/add', (req,res) => {
-    res.send('server is runnning and waitting for store')
+    res.send('ami pari na re pari na ')
 });
 app.listen(port, () => {
     console.log("server is running on port", port);
