@@ -60,29 +60,27 @@ async function run(){
       });
 
     //   update product 
-    // app.put("/inventory/:id", async (req, res) => {
-    //    const id = req.params.id;
-    //    const updatequantity = req.body;
-    //    const filter = {_id: ObjectId(id)};
-    //    const options = { upsert : true};
-    //    const updateddoc = {
-    //        $set: {
+    app.put("/inventory/:id", async (req, res) => {
+       const id = req.params.id;
+       const updatequantity = req.body;
+       const filter = {_id: ObjectId(id)};
+       const options = { upsert : true};
+       const updateddoc = {
+           $set: {
             
-    //         description:updatequantity.description,
-    //         gender:updatequantity.gender,
-    //         images:updatequantity.images,
-    //         name:updatequantity.name,
-    //         price:updatequantity.price,
-    //         quantity: updatequantity.quantity,
-    //         supplierName:updatequantity.supplierName
+            description:updatequantity.description,
+            gender:updatequantity.gender,
+            images:updatequantity.images,
+            name:updatequantity.name,
+            price:updatequantity.price,
+            quantity: updatequantity.quantity,
+            supplierName:updatequantity.supplierName
 
-
-
-
-
-
-    //        }
-    //    };
+           }
+        };
+        const result = await productCollection.updateOne(filter, updateddoc,options);
+        res.send(result);
+       })
 
 
     // my manage post product collection from clint  
