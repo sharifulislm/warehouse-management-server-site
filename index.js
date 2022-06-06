@@ -67,20 +67,22 @@ async function run(){
        const options = { upsert : true};
        const updateddoc = {
            $set: {
-            
-            description:updatequantity.description,
-            gender:updatequantity.gender,
-            images:updatequantity.images,
-            name:updatequantity.name,
-            price:updatequantity.price,
+
             quantity: updatequantity.quantity,
-            supplierName:updatequantity.supplierName
+     
 
            }
         };
         const result = await productCollection.updateOne(filter, updateddoc,options);
-        res.send(result);
+        res.send(result)
        })
+       app.put("/inventory/:id", async (req, resp) => {
+        let result = await productCollection.updateOne(
+            { _id: req.params.id },
+            { $set: req.body }
+        )
+        resp.send(result)
+    });
 
 
     // my manage post product collection from clint  
